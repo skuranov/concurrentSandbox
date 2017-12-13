@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
-public class Main {
+public class MainBase {
 
     private static Integer threadCount = Runtime.getRuntime().availableProcessors();
     private static Integer vectorSize = 10000000;
