@@ -10,15 +10,17 @@ import java.util.concurrent.*;
 
 public class Main {
 
-    public static Integer threadCount = 2;
-    public static Integer vectorSize = 100;
+    private static Integer threadCount = Runtime.getRuntime().availableProcessors();
+    private static Integer vectorSize = 10000000;
+    private static Integer complexityFactor = 2;
 
-    public static void main(String[] args) throws IOException {
-        System.out.println("Greetings %userNa1me%! Welcome to the application! You have some options: " +
-                "1 - Enter the vector size; " +
-                "2 - Enter the thread count; " +
-                "3 - Start profiling : " +
-                "4 - Exit");
+    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
+        System.out.println("Greetings %userName%! Welcome to the application! You have some options: " +
+                "1 - Enter the thread count; " +
+                "2 - Enter the vector size; " +
+                "3 - Enter the complexity factor K; " +
+                "4 - Start profiling; " +
+                "5 - Exit");
         try (InputStreamReader is = new InputStreamReader(System.in);
              BufferedReader br = new BufferedReader(is)) {
             String line = null;
@@ -36,22 +38,36 @@ public class Main {
                         System.out.println("Vector size has been changed to " + vectorSize);
                         break;
                     case "3":
-                        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
-                        List <Double> inputVector = new VectorGenerator().generate(vectorSize);
-                        List <List<Double>> subLists = new ArrayList<>();
-                        int elementsPerThread = vectorSize/threadCount;
-                        for (int i = 0; i < threadCount; i++)
-                        {
-                            subLists.add(inputVector.subList(i*elementsPerThread, (i++)*elementsPerThread));
-                        }
-                        System.out.println("Profiling started at " + System.nanoTime());
-                        for (List<Double> subList : subLists) {
-                            Callable callable = new Job(subList);
-                            Future<String> future = executorService.submit(callable);
-                        }
-                        System.out.println("Profiling ended at " + System.nanoTime());
+                        System.out.println("Please, enter the complexity factor K .....");
+                        complexityFactor = Integer.parseInt(br.readLine());
+                        System.out.println("Complexity factor K  has been changed to " + complexityFactor);
                         break;
                     case "4":
+                        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+                        List<Double> inputVector = new VectorGenerator().generate(vectorSize);
+                        List<List<Double>> subLists = new ArrayList<>();
+                        int elementsPerThread = vectorSize / threadCount;
+                        for(int i = 0; i < threadCount; i++){
+                            subLists.add(new ArrayList<>());
+                        }
+                        for (int i = 0; i < threadCount * elementsPerThread; i++){
+                            int cell = (i+1)%threadCount;
+                            subLists.get(cell).add(inputVector.get(i));
+                        }
+                        System.out.println("The profiling has been started");
+                        long startTime = System.nanoTime();
+                        List<Future<String>> resultList = new ArrayList<>();
+                        int threadNumber = 1;
+                        for (List<Double> subList : subLists) {
+                            Callable callable = new Job(subList, threadNumber++,complexityFactor);
+                            resultList.add(executorService.submit(callable));
+                        }
+                        for (Future<String> stringFuture : resultList) {
+                            System.out.println(stringFuture.get());
+                        }
+                        System.out.println("The job has taken " + (((double) (System.nanoTime() - startTime)) / 1000000) + " ms");
+                        break;
+                    case "5":
                         break label;
                     default:
                         System.out.println("Unknown command entered : " + line);

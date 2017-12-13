@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VectorGenerator {
-    List<Double> generate(Integer size) {
+    public List<Double> generate(Integer size) {
         List outList = new ArrayList();
-        for (Integer i = 1; i < size; i++) {
-            outList.add(i);
+        for (Integer i = 0; i < size; i++) {
+            outList.add(Double.parseDouble(i.toString()));
         }
         return outList;
     }
