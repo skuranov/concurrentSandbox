@@ -12,7 +12,7 @@ import java.util.concurrent.*;
 
 public class MainErat {
 
-    private static Integer interval = 1000000;
+    private static Integer interval = 100000;
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         System.out.println("Greetings %userName%! Welcome to the application! Choose your destiny: " +
@@ -37,7 +37,7 @@ public class MainErat {
                         new AdvancedSequentialErat().perform(interval);
                         break;
                     case "3":
-
+                        new DataSplittingConcurrentErat().perform(interval);
                         break;
                     case "4":
                         break;
