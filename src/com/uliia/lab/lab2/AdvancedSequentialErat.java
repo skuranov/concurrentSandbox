@@ -1,9 +1,8 @@
 package com.uliia.lab.lab2;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleSequentialErat implements Erat {
+public class AdvancedSequentialErat implements Erat {
 
     @Override
     public Boolean checkIfNumberSimple(Integer num, List<Integer> simpleNumbers) {
@@ -15,6 +14,10 @@ public class SimpleSequentialErat implements Erat {
 
     @Override
     public void execute(Integer interval, List<Integer> simpleNumbers) {
-        executeInner(4, interval, simpleNumbers);
+        Integer baseInterval = (int) Math.sqrt(interval);
+        executeInner(4, baseInterval, simpleNumbers);
+        executeInner(baseInterval, interval, simpleNumbers);
     }
+
+
 }

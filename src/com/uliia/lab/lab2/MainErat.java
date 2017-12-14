@@ -12,7 +12,7 @@ import java.util.concurrent.*;
 
 public class MainErat {
 
-    private static Long timeout = 1000L;
+    private static Integer interval = 1000000;
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         System.out.println("Greetings %userName%! Welcome to the application! Choose your destiny: " +
@@ -31,16 +31,20 @@ public class MainErat {
             while ((line = br.readLine()) != null) {
                 switch (line) {
                     case "1":
-                        new SimpleSequentialErat(timeout).perform();
-
+                        new SimpleSequentialErat().perform(interval);
                         break;
                     case "2":
-
+                        new AdvancedSequentialErat().perform(interval);
                         break;
                     case "3":
 
                         break;
                     case "4":
+                        break;
+                    case "7":
+                        System.out.println("Please, enter the new timeout......");
+                        interval = Integer.parseInt(br.readLine());
+                        System.out.println("The timeout has been changed to " + interval);
                         break;
                     case "8":
                         break label;
