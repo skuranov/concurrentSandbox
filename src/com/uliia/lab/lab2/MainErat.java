@@ -40,6 +40,7 @@ public class MainErat {
                         new DataSplittingConcurrentErat().perform(interval);
                         break;
                     case "4":
+                        new SimpleNumbersSplittingConcurrentErat().perform(interval);
                         break;
                     case "7":
                         System.out.println("Please, enter the new timeout......");

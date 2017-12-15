@@ -1,6 +1,6 @@
-package com.uliia.lab.lab2;
+package com.uliia.lab.lab2.job;
 
-import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 /**
@@ -11,26 +11,29 @@ public class CheckingJob implements Callable {
     private Integer index;
     private Integer minNum;
     private Integer maxNum;
-    private List<Integer> simpleNumbers;
+    private Set<Integer> simpleNumbers;
+    private Set<Integer> simpleNumbersOrig;
 
-    public CheckingJob(Integer index, Integer minNum, Integer maxNum, List<Integer> simpleNumbers) {
+    public CheckingJob(Integer index, Integer minNum, Integer maxNum,
+                       Set<Integer> simpleNumbersOrig, Set<Integer> simpleNumbers) {
         this.index = index;
         this.minNum = minNum;
         this.maxNum = maxNum;
         this.simpleNumbers = simpleNumbers;
+        this.simpleNumbersOrig = simpleNumbersOrig;
     }
 
     @Override
     public Object call() throws Exception {
         for (int i = minNum; i < maxNum; i++) {
             if (checkIfNumberSimple(i, simpleNumbers)) {
-                simpleNumbers.add(i);
+                simpleNumbersOrig.add(i);
             }
         }
-        return "Thread " + index + "has ended";
+        return index;
     }
 
-    private Boolean checkIfNumberSimple(Integer num, List<Integer> simpleNumbers) {
+    private Boolean checkIfNumberSimple(Integer num, Set<Integer> simpleNumbers) {
         Integer maximumDivider = (int) Math.sqrt(num);
         return simpleNumbers.stream()
                 .filter(i -> i <= maximumDivider)

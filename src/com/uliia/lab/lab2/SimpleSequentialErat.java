@@ -1,12 +1,11 @@
 package com.uliia.lab.lab2;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.NavigableSet;
 
 public class SimpleSequentialErat implements Erat {
 
     @Override
-    public void execute(Integer interval, List<Integer> simpleNumbers) {
+    public void execute(Integer interval, NavigableSet<Integer> simpleNumbers) {
         executeInner(4, interval, simpleNumbers);
     }
 }
